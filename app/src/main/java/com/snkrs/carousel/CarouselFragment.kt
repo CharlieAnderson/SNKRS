@@ -1,6 +1,7 @@
 package com.snkrs.carousel
 
 import android.app.Activity
+import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -17,6 +18,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/***
+ * Fragment used to show a carousel of an Artist's top tracks on Spotify
+ */
 class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutBinding>() {
 	var carouselAdapter: CarouselAdapter? = null
 
@@ -31,34 +35,57 @@ class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutB
 		viewModel.topTracksData.observe(viewLifecycleOwner, { updateCarousel() })
 		viewModel.artistData.observe(viewLifecycleOwner, { updateArtistTitle(it.name) })
 	}
-	
+
+	fun convertDpToPixels(dp: Float): Float {
+		val res = resources
+		return TypedValue.applyDimension(
+			TypedValue.COMPLEX_UNIT_DIP,
+			dp,
+			res.displayMetrics
+		)
+	}
+
+	/**
+	 * sets up a default carousel with ?-mark views and hides the buttons.
+	 */
 	private fun setDefaultCarouselAdapter() {
 		val defaultBitmap = context?.resources?.let {
 			viewModel.getDrawableBitMap(it, android.R.drawable.ic_menu_help)
 		}
 		carouselAdapter = CarouselAdapter(
-			listOf(defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap),
+			listOf(defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap)
 		)
 		binding.fragmentMotionLayout.carousel.setAdapter(carouselAdapter)
 	}
 
+	/**
+	 * updates the title with artist's name at the top.
+	 */
 	private fun updateArtistTitle(artistName: String) {
 		binding.artistTitleText.text = getString(R.string.artist_title_placeholder, artistName)
 	}
 
+	/**
+	 * updates the carousel with the Artist's top track data.
+	 */
 	private fun updateCarousel() {
 		GlobalScope.launch(Dispatchers.Main) {
 			carouselAdapter = CarouselAdapter(
 				images = viewModel.getImageBitmapsAsync().await() ?: listOf(),
 				trackNames = viewModel.getTopTrackNames() ?: listOf(),
-				getAnalysisButtonClickListener()
+				buttonOnClick = getAnalysisButtonClickListener(),
+				convertDpToPixels = ::convertDpToPixels
 			)
 			binding.fragmentMotionLayout.carousel.setAdapter(carouselAdapter)
 			binding.fragmentMotionLayout.carousel.refresh()
 		}
 	}
 
+	/**
+	 * click listener for the analysis button. navigates to the [TrackAnalysisFragment].
+	 */
 	private fun getAnalysisButtonClickListener() = View.OnClickListener {
+		// passes Navigator extras for shared element animation
 		val extras = FragmentNavigatorExtras(
 			binding.artistTitleText to TITLE_TEXT_EXTRA,
 			binding.fragmentMotionLayout.carouselItem3.centerCard to TRACK_CARD_EXTRA,
@@ -74,6 +101,10 @@ class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutB
 		)
 	}
 
+	/**
+	 * action listener for the artist search bar.
+	 * Closes keyboard when search entered and uses query to search spotify for first artist.
+	 */
 	private fun getOnEditorActionListener() = TextView.OnEditorActionListener {
 		textView, actionId, _ ->
 		when (actionId) {

@@ -16,6 +16,9 @@ import com.snkrs.network.models.Artist
 import com.snkrs.toBitmap
 import kotlinx.coroutines.*
 
+/**
+ * ViewModel for the [CarouselFragment]
+ */
 class CarouselViewModel(
 	private val repository: MainRepository
 ): BaseViewModel() {
@@ -33,6 +36,10 @@ class CarouselViewModel(
 	private var _topTracksData = MutableLiveData<List<Track>>()
 	val topTracksData: LiveData<List<Track>> = _topTracksData
 
+	/**
+	 * Uses the search bar query to search for an artist on spotify,
+	 *  and populate the data for the artist and their top tracks.
+	 */
 	fun getArtistAndTrackData(query: String) {
 		if (query.isBlank()) return
 		viewModelScope.launch {
@@ -44,6 +51,9 @@ class CarouselViewModel(
 		}
 	}
 
+	/**
+	 * Get bitmaps from URL asynchronously.
+	 */
 	fun getImageBitmapsAsync(): Deferred<List<Bitmap>?> {
 		return viewModelScope.async(Dispatchers.IO) {
 			topTracksData.value?.mapNotNull {
@@ -52,11 +62,20 @@ class CarouselViewModel(
 		}
 	}
 
+	/**
+	 * Converts Drawable to Bitmap
+	 */
 	fun getDrawableBitMap(resources: Resources, drawableId: Int): Bitmap =
 		BitmapFactory.decodeResource(resources, drawableId)
 
+	/**
+	 * Gets the list of names for the top tracks to display.
+	 */
 	fun getTopTrackNames(): List<String>? = topTracksData.value?.map { it.name }?.toList()
 
+	/**
+	 * Gets a bundle of the selected track information to pass to the Analysis fragment.
+	 */
 	fun getAnalysisBundle(trackText: String): Bundle {
 		val trackIndex = _topTracksData.value?.indexOfFirst { trackText.contains(it.name) }
 		val trackId = trackIndex?.let { _topTracksData.value?.get(trackIndex)?.id }

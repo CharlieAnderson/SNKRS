@@ -7,6 +7,9 @@ import com.snkrs.network.models.TrackAudioFeatures
 import retrofit2.Call
 import retrofit2.http.*
 
+/**
+ * Retrofit interface detailing the Spotify API endpoints
+ */
 interface SpotifyApi {
 	companion object {
 		const val ARTIST = "artist"

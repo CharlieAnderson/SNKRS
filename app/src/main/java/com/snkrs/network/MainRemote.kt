@@ -5,6 +5,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Remote class used directly for network API calls to the Spotify endpoints defined in [SpotifyApi]
+ */
 class MainRemote {
 	companion object {
 		private const val SPOTIFY_AUTH_URL = "https://accounts.spotify.com/"

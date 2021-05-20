@@ -13,11 +13,17 @@ import com.snkrs.R
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
+/**
+ * Class for setting up the views and data for the Radar Chart
+ */
 class RadarChartHelper(private val radarChart: RadarChart, private val resources: Resources) {
 	companion object {
 		const val DATASET_LABEL = "Song Analysis"
 	}
 
+	/**
+	 * sets up layout for the RadarChart and returns the RadarChart
+	 */
 	fun setupRadarChart() = radarChart.apply {
 		webColor = resources.getColor(R.color.dark_grey)
 		webColorInner = resources.getColor(R.color.dark_grey)
@@ -32,6 +38,9 @@ class RadarChartHelper(private val radarChart: RadarChart, private val resources
 		setupAxes(this)
 	}
 
+	/**
+	 * Takes a list of RadarEntreis and binds the data to the RadarChart
+	 */
 	fun bindDataToChart(entries: List<RadarEntry>) {
 		val dataset = setupDataSet(entries)
 		val data = RadarData(dataset).apply {
@@ -49,6 +58,9 @@ class RadarChartHelper(private val radarChart: RadarChart, private val resources
 		radarChart.invalidate()
 	}
 
+	/**
+	 * Sets up the layout for the X and Y Axes
+	 */
 	private fun setupAxes(radarChart: RadarChart) {
 		radarChart.yAxis.apply {
 			setLabelCount(6, true)
@@ -71,6 +83,9 @@ class RadarChartHelper(private val radarChart: RadarChart, private val resources
 		}
 	}
 
+	/**
+	 * Sets up the layout for the data entries, and returns the RadarDataSet
+	 */
 	private fun setupDataSet(entries: List<RadarEntry>) =
 		RadarDataSet(entries, DATASET_LABEL).apply {
 			color = resources.getColor(android.R.color.holo_red_dark)

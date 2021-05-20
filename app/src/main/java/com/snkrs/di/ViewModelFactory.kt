@@ -6,6 +6,9 @@ import com.snkrs.analysis.TrackAnalysisViewModel
 import com.snkrs.carousel.CarouselViewModel
 import com.snkrs.network.MainRepository
 
+/**
+ * ViewModel Factory used to facilitate constructor dependency injection for each ViewModel
+ */
 class ViewModelFactory(
 	private val repository: MainRepository
 ) : ViewModelProvider.Factory {

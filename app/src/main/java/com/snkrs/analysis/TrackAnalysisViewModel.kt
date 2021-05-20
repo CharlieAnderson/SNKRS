@@ -16,6 +16,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
+/**
+ *  ViewModel for the [TrackAnalysisFragment].
+ */
 class TrackAnalysisViewModel(private val repository: MainRepository): BaseViewModel() {
 	companion object {
 		const val MED_IMAGE_INDEX = 1
@@ -28,6 +31,10 @@ class TrackAnalysisViewModel(private val repository: MainRepository): BaseViewMo
 	private var _radarDataEntries = MutableLiveData<List<RadarEntry>>()
 	val radarDataEntries: LiveData<List<RadarEntry>> = _radarDataEntries
 
+	/**
+	 * gets the audio features for the track selected,
+	 *  based on the artist id and index of the track within the top tracks list.
+	 */
 	fun getSelectedTrackAnalysis(artistId: String, trackIndex: Int) {
 		viewModelScope.launch(Dispatchers.IO) {
 			val track = repository.getArtistTopTracks(artistId)[trackIndex]
@@ -36,12 +43,19 @@ class TrackAnalysisViewModel(private val repository: MainRepository): BaseViewMo
 		}
 	}
 
+	/**
+	 * gets the album cover bitmap from the selected track data.
+	 */
 	fun getImageBitmapAsync() : Deferred<Bitmap?> {
 		return viewModelScope.async(Dispatchers.IO) {
 			_selectedTrackData.value?.album?.images?.get(MED_IMAGE_INDEX)?.url?.toBitmap()
 		}
 	}
 
+	/**
+	 * returns a list of the pre-determined audio features of the track,
+	 * with values adjusted to be between 0-100.
+	 */
 	fun getRadarEntries(trackAnalysis: TrackAudioFeatures) = listOf(
 		RadarEntry(trackAnalysis.danceability.toFloat() * FEATURE_MULTIPLIER),
 		RadarEntry(trackAnalysis.energy.toFloat() * FEATURE_MULTIPLIER),

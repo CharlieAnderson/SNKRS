@@ -13,7 +13,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
+/**
+ *  Fragment to display a radar chart representing the Audio features of the selected track.
+ */
 class TrackAnalysisFragment: BaseFragment<TrackAnalysisViewModel, FragmentAnalysisLayoutBinding>() {
 	companion object {
 		val audioAnalysisLabels = arrayOf(
@@ -56,6 +58,9 @@ class TrackAnalysisFragment: BaseFragment<TrackAnalysisViewModel, FragmentAnalys
 		)
 	}
 
+	/**
+	 * sets up the artist/album/track name text, as well as the album cover.
+	 */
 	private fun setHeader(track: Track) {
 		binding.analysisTitle.text = getString(
 			R.string.track_album_artist_placeholder,
