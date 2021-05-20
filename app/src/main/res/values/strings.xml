@@ -3,7 +3,7 @@
     <string name="sample">Sample</string>
     <string name="search_hint">Your favorite musical artist</string>
     <string name="artist_title">Analyze an artist\'s songs below</string>
-    <string name="artist_title_placeholder">%1$s\nMost Popular Tracks</string>
+    <string name="artist_title_placeholder">Most Popular Tracks by %1$s</string>
     <string name="track_album_artist_placeholder">%1$s\n%2$s\n%3$s</string>
     <string name="analyze">Analyze</string>
 </resources>

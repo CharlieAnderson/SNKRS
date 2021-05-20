@@ -6,20 +6,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/artist_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/artist_title"
-        android:textStyle="bold"
-        android:textSize="20sp"
         android:layout_margin="12dp"
+        android:text="@string/artist_title"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:transitionName="title_text"
         app:layout_constraintBottom_toTopOf="@+id/fragment_motion_layout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.273" />
 
     <include
         android:id="@+id/fragment_motion_layout"
@@ -31,18 +33,18 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35" />
+        app:layout_constraintVertical_bias="0.642" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/searchInputLayout"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         app:startIconDrawable="@android:drawable/ic_menu_search"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/artist_title_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_motion_layout"
-        app:layout_constraintVertical_bias="0.3" >
+        app:layout_constraintBottom_toTopOf="@+id/fragment_motion_layout"
+        app:layout_constraintVertical_bias="0.4" >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchEditText"

@@ -3,4 +3,9 @@
     <style name="ShapeAppearanceOverlay.corner" parent="">
         <item name="cornerSize">4dp</item>
     </style>
+    <style name="FullScreenDialogStyle">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:actionBarStyle">@style/Theme.SNKRS.AppBarOverlay</item>
+    </style>
 </resources>

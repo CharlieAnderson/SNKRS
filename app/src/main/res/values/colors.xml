@@ -7,4 +7,5 @@
     <color name="dark_grey">#FF222222</color>
     <color name="white">#FFFFFFFF</color>
     <color name="seafoam_secondary">#07EF83</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>
