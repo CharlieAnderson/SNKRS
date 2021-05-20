@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.snkrs.BaseViewModel
+import com.snkrs.analysis.TrackAnalysisViewModel.Companion.MED_IMAGE_INDEX
 import com.snkrs.network.MainRepository
 import com.snkrs.network.models.Track
 import com.snkrs.network.models.Artist
@@ -45,7 +46,9 @@ class CarouselViewModel(
 
 	fun getImageBitmapsAsync(): Deferred<List<Bitmap>?> {
 		return viewModelScope.async(Dispatchers.IO) {
-			topTracksData.value?.mapNotNull { it.album.images[1].url.toBitmap() }?.toList()
+			topTracksData.value?.mapNotNull {
+				it.album.images[MED_IMAGE_INDEX].url.toBitmap()
+			}?.toList()
 		}
 	}
 
