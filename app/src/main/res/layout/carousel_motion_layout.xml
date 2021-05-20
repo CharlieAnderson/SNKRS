@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/motion_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/motion_layout_scene">
+
+    <include layout="@layout/carousel_item_layout"
+        android:id="@+id/carousel_item_1"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/carousel_item_2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/carousel_item_2"
+        layout="@layout/carousel_item_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/carousel_item_3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/carousel_item_3"
+        layout="@layout/carousel_center_item_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/carousel_item_4"
+        layout="@layout/carousel_item_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/carousel_item_3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include layout="@layout/carousel_item_layout"
+        android:id="@+id/carousel_item_5"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/carousel_item_4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="50dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/right_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="50dp" />
+
+    <androidx.constraintlayout.helper.widget.Carousel
+        android:id="@+id/carousel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:carousel_forwardTransition="@+id/forward"
+        app:carousel_backwardTransition="@+id/backward"
+        app:carousel_previousState="@+id/previous"
+        app:carousel_nextState="@+id/next"
+        app:carousel_infinite="true"
+        app:carousel_firstView="@+id/carousel_item_3"
+        app:constraint_referenced_ids=
+            "carousel_item_1,
+            carousel_item_2,
+            carousel_item_3,
+            carousel_item_4,
+            carousel_item_5" />
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

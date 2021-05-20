@@ -1,8 +1,8 @@
 package com.snkrs.di
 
 import android.content.Context
-import com.snkrs.MainRepository
-import com.snkrs.MainRemote
+import com.snkrs.network.MainRepository
+import com.snkrs.network.MainRemote
 
 class DependencyGraph(applicationContext: Context) {
 	val remote by lazy { MainRemote() }

@@ -9,5 +9,14 @@
         android:id="@+id/carouselFragment"
         android:name="com.snkrs.carousel.CarouselFragment"
         android:label="CarouselFragment"
-        tools:layout="@layout/fragment_carousel_layout"/>
+        tools:layout="@layout/fragment_carousel_layout">
+        <action
+            android:id="@+id/action_carouselFragment_to_trackAnalysisFragment"
+            app:destination="@id/trackAnalysisFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/trackAnalysisFragment"
+        android:name="com.snkrs.analysis.TrackAnalysisFragment"
+        android:label="TrackAnalysisFragment"
+        tools:layout="@layout/fragment_analysis_layout"/>
 </navigation>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="ShapeAppearanceOverlay.corner" parent="">
+        <item name="cornerSize">4dp</item>
+    </style>
+</resources>
