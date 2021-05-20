@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.snkrs.BaseViewModel
 import com.snkrs.network.MainRepository
 import com.snkrs.network.models.Track
-import com.snkrs.network.response.TrackAudioFeaturesResponse
+import com.snkrs.network.models.TrackAudioFeatures
 import com.snkrs.toBitmap
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -21,8 +21,8 @@ class TrackAnalysisViewModel(private val repository: MainRepository): BaseViewMo
 	private var _selectedTrackData = MutableLiveData<Track>()
 	val selectedTrackData: LiveData<Track> = _selectedTrackData
 
-	private var _trackAnalysisData = MutableLiveData<TrackAudioFeaturesResponse>()
-	val trackAnalysisData: LiveData<TrackAudioFeaturesResponse> = _trackAnalysisData
+	private var _trackAnalysisData = MutableLiveData<TrackAudioFeatures>()
+	val trackAnalysisData: LiveData<TrackAudioFeatures> = _trackAnalysisData
 
 	fun getSelectedTrackAnalysis(artistId: String, trackIndex: Int) {
 		viewModelScope.launch(Dispatchers.IO) {

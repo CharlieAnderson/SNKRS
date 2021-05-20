@@ -1,8 +1,8 @@
-package com.snkrs.network.response
+package com.snkrs.network.models
 
 import com.google.gson.annotations.SerializedName
 
-data class TrackAudioFeaturesResponse(
+data class TrackAudioFeatures(
 	val id: String,
 	val danceability: Double,
 	val energy: Double,

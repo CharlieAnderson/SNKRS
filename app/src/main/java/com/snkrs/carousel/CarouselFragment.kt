@@ -17,25 +17,29 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
 class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutBinding>() {
+	var carouselAdapter: CarouselAdapter? = null
 
 	override fun setupListeners() {
 		binding.searchEditText.setOnEditorActionListener(getOnEditorActionListener())
-		if (viewModel.carouselAdapter == null) {
-			val defaultBitmap = context?.resources?.let {
-				viewModel.getDrawableBitMap(it, android.R.drawable.ic_menu_help)
-			}
-			viewModel.carouselAdapter = CarouselAdapter(
-				listOf(defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap),
-			)
+		if (carouselAdapter == null) {
+			setDefaultCarouselAdapter()
 		}
-		binding.fragmentMotionLayout.carousel.setAdapter(viewModel.carouselAdapter)
 	}
 
 	override fun observeData() {
 		viewModel.topTracksData.observe(viewLifecycleOwner, { updateCarousel() })
 		viewModel.artistData.observe(viewLifecycleOwner, { updateArtistTitle(it.name) })
+	}
+	
+	private fun setDefaultCarouselAdapter() {
+		val defaultBitmap = context?.resources?.let {
+			viewModel.getDrawableBitMap(it, android.R.drawable.ic_menu_help)
+		}
+		carouselAdapter = CarouselAdapter(
+			listOf(defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap),
+		)
+		binding.fragmentMotionLayout.carousel.setAdapter(carouselAdapter)
 	}
 
 	private fun updateArtistTitle(artistName: String) {
@@ -44,12 +48,12 @@ class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutB
 
 	private fun updateCarousel() {
 		GlobalScope.launch(Dispatchers.Main) {
-			viewModel.carouselAdapter = CarouselAdapter(
+			carouselAdapter = CarouselAdapter(
 				images = viewModel.getImageBitmapsAsync().await() ?: listOf(),
 				trackNames = viewModel.getTopTrackNames() ?: listOf(),
 				getAnalysisButtonClickListener()
 			)
-			binding.fragmentMotionLayout.carousel.setAdapter(viewModel.carouselAdapter)
+			binding.fragmentMotionLayout.carousel.setAdapter(carouselAdapter)
 			binding.fragmentMotionLayout.carousel.refresh()
 		}
 	}
@@ -71,13 +75,12 @@ class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutB
 	}
 
 	private fun getOnEditorActionListener() = TextView.OnEditorActionListener {
-		textView, actionId, event ->
+		textView, actionId, _ ->
 		when (actionId) {
 			EditorInfo.IME_ACTION_DONE -> {
 				viewModel.getArtistAndTrackData(query = textView.text.toString())
 				val inputMethodManager =
-					context?.getSystemService(Activity.INPUT_METHOD_SERVICE)
-						as InputMethodManager
+					context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 				inputMethodManager.hideSoftInputFromWindow(binding.root.windowToken, 0)
 				true
 			}

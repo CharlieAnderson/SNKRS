@@ -3,7 +3,7 @@ package com.snkrs.network
 import com.snkrs.network.response.ArtistTopTracksResponse
 import com.snkrs.network.response.AuthTokenResponse
 import com.snkrs.network.response.SearchArtistsResponse
-import com.snkrs.network.response.TrackAudioFeaturesResponse
+import com.snkrs.network.models.TrackAudioFeatures
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -40,5 +40,5 @@ interface SpotifyApi {
 	fun getTrackAudioFeatures(
 		@Path("id") trackId: String,
 		@Header("Authorization") authorization: String,
-	): Call<TrackAudioFeaturesResponse>
+	): Call<TrackAudioFeatures>
 }

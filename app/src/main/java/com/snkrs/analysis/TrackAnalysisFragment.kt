@@ -14,7 +14,7 @@ import com.snkrs.R
 import com.snkrs.base.BaseFragment
 import com.snkrs.databinding.FragmentAnalysisLayoutBinding
 import com.snkrs.network.models.Track
-import com.snkrs.network.response.TrackAudioFeaturesResponse
+import com.snkrs.network.models.TrackAudioFeatures
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -93,7 +93,7 @@ class TrackAnalysisFragment: BaseFragment<TrackAnalysisViewModel, FragmentAnalys
 		legend.isEnabled = false
 	}
 
-	private fun setupRadarChartData(trackAnalysis: TrackAudioFeaturesResponse) {
+	private fun setupRadarChartData(trackAnalysis: TrackAudioFeatures) {
 		val dataset = getDataSet(getRadarEntries(trackAnalysis))
 		val data = RadarData(dataset).apply {
 			setValueFormatter(object: ValueFormatter() {
@@ -109,7 +109,7 @@ class TrackAnalysisFragment: BaseFragment<TrackAnalysisViewModel, FragmentAnalys
 		binding.radarChart.data = data
 	}
 
-	private fun getRadarEntries(trackAnalysis: TrackAudioFeaturesResponse) = listOf(
+	private fun getRadarEntries(trackAnalysis: TrackAudioFeatures) = listOf(
 		RadarEntry(trackAnalysis.danceability.toFloat() * featureMultiplier),
 		RadarEntry(trackAnalysis.energy.toFloat() * featureMultiplier),
 		RadarEntry(trackAnalysis.valence.toFloat() * featureMultiplier),

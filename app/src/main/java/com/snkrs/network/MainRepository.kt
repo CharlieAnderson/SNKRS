@@ -3,7 +3,7 @@ package com.snkrs.network
 import com.snkrs.network.models.Track
 import com.snkrs.network.response.AuthTokenResponse
 import com.snkrs.network.models.Artist
-import com.snkrs.network.response.TrackAudioFeaturesResponse
+import com.snkrs.network.models.TrackAudioFeatures
 import retrofit2.await
 
 class MainRepository(private val remote: MainRemote) {
@@ -15,11 +15,11 @@ class MainRepository(private val remote: MainRemote) {
 	private var tokenExpiry: Long = 0
 	private lateinit var artist: Artist
 	private var artistTopTracks: List<Track>? = null
-	private var audioFeatures: TrackAudioFeaturesResponse? = null
+	private var audioFeatures: TrackAudioFeatures? = null
 
-	suspend fun searchForArtist(query: String): Artist {
+	suspend fun searchForArtist(query: String): Artist? {
 		if (isTokenExpired()) getAuthToken()
-		artist = remote.searchArtists(token, query).await().artists.artist.first()
+		val artist = remote.searchArtists(token, query).await().artists.artist.firstOrNull()
 		artistTopTracks = null
 		audioFeatures = null
 		return artist
@@ -30,7 +30,7 @@ class MainRepository(private val remote: MainRemote) {
 		return artistTopTracks ?: remote.getArtistTopTracks(token, artistId).await().tracks
 	}
 
-	suspend fun getTrackAudioFeatures(trackId: String): TrackAudioFeaturesResponse {
+	suspend fun getTrackAudioFeatures(trackId: String): TrackAudioFeatures {
 		if (isTokenExpired()) getAuthToken()
 		return audioFeatures ?: remote.getTrackAudioFeatures(token, trackId).await()
 	}

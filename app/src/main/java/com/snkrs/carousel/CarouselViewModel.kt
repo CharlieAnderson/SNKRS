@@ -12,7 +12,6 @@ import com.snkrs.BaseViewModel
 import com.snkrs.network.MainRepository
 import com.snkrs.network.models.Track
 import com.snkrs.network.models.Artist
-import com.snkrs.network.response.TrackAudioFeaturesResponse
 import com.snkrs.toBitmap
 import kotlinx.coroutines.*
 
@@ -33,14 +32,13 @@ class CarouselViewModel(
 	private var _topTracksData = MutableLiveData<List<Track>>()
 	val topTracksData: LiveData<List<Track>> = _topTracksData
 
-	var carouselAdapter: CarouselAdapter? = null
-
 	fun getArtistAndTrackData(query: String) {
 		viewModelScope.launch {
-			val artist = repository.searchForArtist(query)
-			_artistData.postValue(artist)
-			val topTracks = repository.getArtistTopTracks(artistId = artist.id)
-			_topTracksData.postValue(topTracks)
+			repository.searchForArtist(query)?.let {
+				_artistData.postValue(it)
+				val topTracks = repository.getArtistTopTracks(artistId = it.id)
+				_topTracksData.postValue(topTracks)
+			}
 		}
 	}
 
