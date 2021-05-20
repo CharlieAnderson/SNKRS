@@ -33,6 +33,7 @@ class CarouselViewModel(
 	val topTracksData: LiveData<List<Track>> = _topTracksData
 
 	fun getArtistAndTrackData(query: String) {
+		if (query.isBlank()) return
 		viewModelScope.launch {
 			repository.searchForArtist(query)?.let {
 				_artistData.postValue(it)
