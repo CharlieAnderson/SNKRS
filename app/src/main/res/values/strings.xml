@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SNKRS</string>
+    <string name="app_name">Spotify Song Analyzer</string>
     <string name="sample">Sample</string>
     <string name="search_hint">Your favorite musical artist</string>
     <string name="artist_title">Analyze an artist\'s songs below</string>

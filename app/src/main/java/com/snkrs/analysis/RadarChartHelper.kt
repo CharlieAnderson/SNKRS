@@ -8,9 +8,7 @@ import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.MPPointF
 import com.snkrs.R
-import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 /**
@@ -70,8 +68,8 @@ class RadarChartHelper(private val radarChart: RadarChart, private val resources
 		}
 		radarChart.xAxis.apply {
 			textSize = 15f
-			axisMaximum = 0f
-			axisMinimum = 0f
+			axisMaximum = 10f
+			axisMinimum = 10f
 			calculate(axisMinimum, axisMaximum)
 			position = XAxis.XAxisPosition.BOTTOM_INSIDE
 			textColor = resources.getColor(R.color.primary_purple)
@@ -98,7 +96,7 @@ class RadarChartHelper(private val radarChart: RadarChart, private val resources
 			highlightCircleInnerRadius = 0f
 			highlightCircleOuterRadius = 4f
 			highlightCircleStrokeWidth = 6f
-			highlightCircleStrokeColor = resources.getColor(R.color.green_secondary)
+			highlightCircleStrokeColor = resources.getColor(R.color.green_primary)
 			highLightColor = 0
 		}
 }

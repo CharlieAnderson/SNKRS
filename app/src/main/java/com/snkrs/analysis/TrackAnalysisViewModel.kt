@@ -23,7 +23,6 @@ class TrackAnalysisViewModel(private val repository: MainRepository): BaseViewMo
 	companion object {
 		const val MED_IMAGE_INDEX = 1
 		const val FEATURE_MULTIPLIER = 100
-		const val LOUDNESS_MULTIPLIER = 10
 	}
 	private var _selectedTrackData = MutableLiveData<Track>()
 	val selectedTrackData: LiveData<Track> = _selectedTrackData
@@ -57,12 +56,11 @@ class TrackAnalysisViewModel(private val repository: MainRepository): BaseViewMo
 	 * with values adjusted to be between 0-100.
 	 */
 	fun getRadarEntries(trackAnalysis: TrackAudioFeatures) = listOf(
-		RadarEntry(trackAnalysis.danceability.toFloat() * FEATURE_MULTIPLIER),
+		RadarEntry(trackAnalysis.instrumentalness.toFloat() * FEATURE_MULTIPLIER),
 		RadarEntry(trackAnalysis.energy.toFloat() * FEATURE_MULTIPLIER),
 		RadarEntry(trackAnalysis.valence.toFloat() * FEATURE_MULTIPLIER),
 		RadarEntry(trackAnalysis.acousticness.toFloat() * FEATURE_MULTIPLIER),
 		RadarEntry(trackAnalysis.liveness.toFloat() * FEATURE_MULTIPLIER),
-		RadarEntry(trackAnalysis.loudness.toFloat().absoluteValue * LOUDNESS_MULTIPLIER),
-		RadarEntry(trackAnalysis.instrumentalness.toFloat() * FEATURE_MULTIPLIER)
+		RadarEntry(trackAnalysis.danceability.toFloat() * FEATURE_MULTIPLIER)
 	)
 }

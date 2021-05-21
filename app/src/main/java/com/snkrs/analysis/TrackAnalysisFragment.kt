@@ -12,6 +12,9 @@ import com.snkrs.network.models.Track
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.appbar.MaterialToolbar
+
 
 /**
  *  Fragment to display a radar chart representing the Audio features of the selected track.
@@ -19,13 +22,12 @@ import kotlinx.coroutines.launch
 class TrackAnalysisFragment: BaseFragment<TrackAnalysisViewModel, FragmentAnalysisLayoutBinding>() {
 	companion object {
 		val audioAnalysisLabels = arrayOf(
-			"Danceability",
+			"Instrumentalness",
 			"Energy",
 			"Positivity",
 			"Acousticness",
 			"Liveness",
-			"Loudness",
-			"Instrumentalness"
+			"Danceability",
 		)
 	}
 
