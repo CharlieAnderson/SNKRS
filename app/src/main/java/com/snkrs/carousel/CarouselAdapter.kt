@@ -11,6 +11,7 @@ import com.snkrs.R
  * adapter to used to set and format the items in the Carousel layout
  */
 class CarouselAdapter(
+	val useDefault: Boolean,
 	private val defaultImage: Int = R.drawable.questionmark,
 	val images: List<Bitmap?>? = null,
 	val trackNames: List<String>? = null,
@@ -37,8 +38,7 @@ class CarouselAdapter(
 		val image = view.findViewById<ImageView>(R.id.item_image)
 		val text = view.findViewById<TextView>(R.id.item_text)
 		val button = view.findViewById<TextView>(R.id.item_analysis_button)
-		// Data is not ready yet when button is disabled, hide button and remove shadows
-		if (buttonOnClick == null) {
+		if (useDefault) {
 			button?.visibility = View.INVISIBLE
 			button?.elevation = NO_ELEVATION
 			image?.elevation = NO_ELEVATION

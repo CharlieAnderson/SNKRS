@@ -55,7 +55,7 @@ class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutB
 	 */
 	private fun setDefaultCarouselAdapter() {
 		lifecycleScope.launch(Dispatchers.Main) {
-			carouselAdapter = CarouselAdapter()
+			carouselAdapter = CarouselAdapter(useDefault = true)
 			binding.fragmentMotionLayout.carousel.setAdapter(carouselAdapter)
 		}
 	}
@@ -73,6 +73,7 @@ class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutB
 	private fun updateCarousel() {
 		lifecycleScope.launch(Dispatchers.Main) {
 			carouselAdapter = CarouselAdapter(
+				useDefault = false,
 				images = viewModel.getImageBitmapsAsync().await() ?: listOf(),
 				trackNames = viewModel.getTopTrackNames() ?: listOf(),
 				buttonOnClick = getAnalysisButtonClickListener(),
