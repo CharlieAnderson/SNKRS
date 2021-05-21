@@ -5,7 +5,7 @@ Using the Spotify API, get an artist's top tracks and show different audio attri
 
 
 
-<img src=https://user-images.githubusercontent.com/6748190/119065452-911bda80-b9ab-11eb-8407-56bf3d07a1bf.gif height=700 />
+<img src=https://user-images.githubusercontent.com/6748190/119065452-911bda80-b9ab-11eb-8407-56bf3d07a1bf.gif height=450 />
 
 
 Built on Android Studio Arctic Fox | 2020.3.1 Canary 15
