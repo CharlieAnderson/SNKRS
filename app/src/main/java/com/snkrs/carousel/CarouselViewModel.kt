@@ -65,8 +65,11 @@ class CarouselViewModel(
 	/**
 	 * Converts Drawable to Bitmap
 	 */
-	fun getDrawableBitMap(resources: Resources, drawableId: Int): Bitmap =
-		BitmapFactory.decodeResource(resources, drawableId)
+	fun getDrawableBitMap(resources: Resources, drawableId: Int): Deferred<Bitmap> {
+		return viewModelScope.async(Dispatchers.IO) {
+			BitmapFactory.decodeResource(resources, drawableId)
+		}
+	}
 
 	/**
 	 * Gets the list of names for the top tracks to display.

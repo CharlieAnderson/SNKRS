@@ -6,6 +6,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.snkrs.R
@@ -49,13 +50,16 @@ class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutB
 	 * sets up a default carousel with ?-mark views and hides the buttons.
 	 */
 	private fun setDefaultCarouselAdapter() {
-		val defaultBitmap = context?.resources?.let {
-			viewModel.getDrawableBitMap(it, android.R.drawable.ic_menu_help)
+		lifecycleScope.launch(Dispatchers.Main) {
+			val defaultBitmap = context?.resources?.let {
+				viewModel.getDrawableBitMap(it, R.drawable.questionmark).await()
+			}
+			carouselAdapter = CarouselAdapter(
+				listOf(defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap)
+			)
+			binding.fragmentMotionLayout.carousel.setAdapter(carouselAdapter)
+			binding.fragmentMotionLayout.carousel.refresh()
 		}
-		carouselAdapter = CarouselAdapter(
-			listOf(defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap)
-		)
-		binding.fragmentMotionLayout.carousel.setAdapter(carouselAdapter)
 	}
 
 	/**
@@ -69,7 +73,7 @@ class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutB
 	 * updates the carousel with the Artist's top track data.
 	 */
 	private fun updateCarousel() {
-		GlobalScope.launch(Dispatchers.Main) {
+		lifecycleScope.launch(Dispatchers.Main) {
 			carouselAdapter = CarouselAdapter(
 				images = viewModel.getImageBitmapsAsync().await() ?: listOf(),
 				trackNames = viewModel.getTopTrackNames() ?: listOf(),
