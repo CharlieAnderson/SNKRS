@@ -1,8 +1,12 @@
 package com.snkrs.carousel
 
 import android.app.Activity
+import android.graphics.Bitmap
+import android.os.Bundle
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
@@ -27,12 +31,12 @@ class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutB
 
 	override fun setupListeners() {
 		binding.searchEditText.setOnEditorActionListener(getOnEditorActionListener())
-		if (carouselAdapter == null) {
-			setDefaultCarouselAdapter()
-		}
 	}
 
 	override fun observeData() {
+		if (carouselAdapter == null) {
+			setDefaultCarouselAdapter()
+		}
 		viewModel.topTracksData.observe(viewLifecycleOwner, { updateCarousel() })
 		viewModel.artistData.observe(viewLifecycleOwner, { updateArtistTitle(it.name) })
 	}
@@ -51,14 +55,8 @@ class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutB
 	 */
 	private fun setDefaultCarouselAdapter() {
 		lifecycleScope.launch(Dispatchers.Main) {
-			val defaultBitmap = context?.resources?.let {
-				viewModel.getDrawableBitMap(it, R.drawable.questionmark).await()
-			}
-			carouselAdapter = CarouselAdapter(
-				listOf(defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap, defaultBitmap)
-			)
+			carouselAdapter = CarouselAdapter()
 			binding.fragmentMotionLayout.carousel.setAdapter(carouselAdapter)
-			binding.fragmentMotionLayout.carousel.refresh()
 		}
 	}
 
