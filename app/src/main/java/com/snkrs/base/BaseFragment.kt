@@ -12,9 +12,14 @@ import com.snkrs.MainActivity
 import com.snkrs.databinding.ActivityMainLayoutBinding
 import com.snkrs.databinding.CarouselCenterItemLayoutBinding
 import com.snkrs.databinding.FragmentCarouselLayoutBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 
 abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding>: Fragment() {
 	lateinit var viewModel: ViewModel
+	private val job = Job()
+	private val uiScope = CoroutineScope(Dispatchers.Main + job)
 	private var _binding: Binding? = null
 	// scoped between onCreateView and onDestroy
 	protected val binding get() = _binding!!
@@ -45,6 +50,7 @@ abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding>: F
 
 	override fun onDestroyView() {
 		super.onDestroyView()
+		job.cancel()
 		_binding = null
 	}
 
