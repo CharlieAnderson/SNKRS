@@ -5,6 +5,6 @@ data class Artist(
 	val id: String,
 	val popularity: Int,
 	val followers: Followers,
-	val genres: ArrayList<String>,
-	val images: ArrayList<Image>,
+	val genres: List<String>,
+	val images: List<Image>,
 )

@@ -1,15 +1,12 @@
 package com.snkrs.carousel
 
 import android.app.Activity
-import android.graphics.Bitmap
-import android.os.Bundle
 import android.util.TypedValue
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -20,7 +17,6 @@ import com.snkrs.carousel.CarouselViewModel.Companion.TITLE_TEXT_EXTRA
 import com.snkrs.carousel.CarouselViewModel.Companion.TRACK_CARD_EXTRA
 import com.snkrs.databinding.FragmentCarouselLayoutBinding
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /***
@@ -94,14 +90,20 @@ class CarouselFragment : BaseFragment<CarouselViewModel, FragmentCarouselLayoutB
 			binding.fragmentMotionLayout.carouselItem3.centerCard to TRACK_CARD_EXTRA,
 			binding.fragmentMotionLayout.carouselItem3.itemImage to ALBUM_IMAGE_EXTRA
 		)
-		findNavController().navigate(
-			R.id.action_carouselFragment_to_trackAnalysisFragment,
-			viewModel.getAnalysisBundle(
-				binding.fragmentMotionLayout.carouselItem3.itemText.text.toString()
-			),
-			null,
-			extras
-		)
+		val selectedTrackText = binding.fragmentMotionLayout.carouselItem3.itemText.text.toString()
+		val trackIndex = viewModel.getTrackIndex(selectedTrackText)
+		trackIndex?.let {
+			findNavController().navigate(
+				R.id.action_carouselFragment_to_trackAnalysisFragment,
+				bundleOf(
+					CarouselViewModel.TRACK_INDEX_KEY to trackIndex,
+					CarouselViewModel.TRACK_ID_KEY to viewModel.topTracksData.value?.get(trackIndex)?.id,
+					CarouselViewModel.ARTIST_ID_KEY to viewModel.artistData.value?.id
+				),
+				null,
+				extras
+			)
+		}
 	}
 
 	/**

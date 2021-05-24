@@ -1,8 +1,6 @@
 package com.snkrs.carousel
 
-import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
@@ -20,8 +18,9 @@ import kotlinx.coroutines.*
  * ViewModel for the [CarouselFragment]
  */
 class CarouselViewModel(
-	private val repository: MainRepository
-): BaseViewModel() {
+	val dispatcher: CoroutineDispatcher,
+	val repository: MainRepository
+): BaseViewModel(dispatcher) {
 	companion object {
 		const val TRACK_INDEX_KEY = "trackIndex"
 		const val TRACK_ID_KEY = "trackId"
@@ -42,7 +41,7 @@ class CarouselViewModel(
 	 */
 	fun getArtistAndTrackData(query: String) {
 		if (query.isBlank()) return
-		viewModelScope.launch {
+		viewModelScope.launch(dispatcher) {
 			repository.searchForArtist(query)?.let {
 				_artistData.postValue(it)
 				val topTracks = repository.getArtistTopTracks(artistId = it.id)
@@ -55,7 +54,7 @@ class CarouselViewModel(
 	 * Get bitmaps from URL asynchronously.
 	 */
 	fun getImageBitmapsAsync(): Deferred<List<Bitmap>?> {
-		return viewModelScope.async(Dispatchers.IO) {
+		return viewModelScope.async(dispatcher) {
 			topTracksData.value?.mapNotNull {
 				it.album.images[MED_IMAGE_INDEX].url.toBitmap()
 			}?.toList()
@@ -68,16 +67,8 @@ class CarouselViewModel(
 	fun getTopTrackNames(): List<String>? = topTracksData.value?.map { it.name }?.toList()
 
 	/**
-	 * Gets a bundle of the selected track information to pass to the Analysis fragment.
+	 * returns the index of the selected track within [_topTracksData], using the track name
 	 */
-	fun getAnalysisBundle(trackText: String): Bundle {
-		val trackIndex = _topTracksData.value?.indexOfFirst { trackText.contains(it.name) }
-		val trackId = trackIndex?.let { _topTracksData.value?.get(trackIndex)?.id }
-		val artistId = artistData.value?.id
-		return bundleOf(
-			TRACK_INDEX_KEY to trackIndex,
-			TRACK_ID_KEY to trackId,
-			ARTIST_ID_KEY to artistId
-		)
-	}
+	fun getTrackIndex(trackText: String) =
+		_topTracksData.value?.indexOfFirst { trackText.contains(it.name) }
 }

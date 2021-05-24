@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.snkrs.analysis.TrackAnalysisViewModel
 import com.snkrs.carousel.CarouselViewModel
 import com.snkrs.network.MainRepository
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * ViewModel Factory used to facilitate constructor dependency injection for each ViewModel
  */
 class ViewModelFactory(
+	private val dispatcher: CoroutineDispatcher,
 	private val repository: MainRepository
 ) : ViewModelProvider.Factory {
 	override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -22,8 +24,14 @@ class ViewModelFactory(
 	}
 	   
 	private fun buildCarouselViewModel(modelClass: Class<CarouselViewModel>) =
-		modelClass.getConstructor(MainRepository::class.java).newInstance(repository)
+		modelClass.getConstructor(
+			CoroutineDispatcher::class.java,
+			MainRepository::class.java
+		).newInstance(dispatcher, repository)
 
 	private fun buildTrackAnalysisViewModel(modelClass: Class<TrackAnalysisViewModel>) =
-		modelClass.getConstructor(MainRepository::class.java).newInstance(repository)
+		modelClass.getConstructor(
+			CoroutineDispatcher::class.java,
+			MainRepository::class.java
+		).newInstance(dispatcher, repository)
 }

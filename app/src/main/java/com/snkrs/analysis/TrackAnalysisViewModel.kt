@@ -10,16 +10,16 @@ import com.snkrs.network.MainRepository
 import com.snkrs.network.models.Track
 import com.snkrs.network.models.TrackAudioFeatures
 import com.snkrs.toBitmap
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.math.absoluteValue
 
 /**
  *  ViewModel for the [TrackAnalysisFragment].
  */
-class TrackAnalysisViewModel(private val repository: MainRepository): BaseViewModel() {
+class TrackAnalysisViewModel(
+	val dispatcher: CoroutineDispatcher,
+	val repository: MainRepository
+): BaseViewModel(dispatcher) {
 	companion object {
 		const val MED_IMAGE_INDEX = 1
 		const val FEATURE_MULTIPLIER = 100
@@ -35,7 +35,7 @@ class TrackAnalysisViewModel(private val repository: MainRepository): BaseViewMo
 	 *  based on the artist id and index of the track within the top tracks list.
 	 */
 	fun getSelectedTrackAnalysis(artistId: String, trackIndex: Int) {
-		viewModelScope.launch(Dispatchers.IO) {
+		viewModelScope.launch(dispatcher) {
 			val track = repository.getArtistTopTracks(artistId)[trackIndex]
 			_selectedTrackData.postValue(track)
 			_radarDataEntries.postValue(getRadarEntries(repository.getTrackAudioFeatures(track.id)))
@@ -46,7 +46,7 @@ class TrackAnalysisViewModel(private val repository: MainRepository): BaseViewMo
 	 * gets the album cover bitmap from the selected track data.
 	 */
 	fun getImageBitmapAsync() : Deferred<Bitmap?> {
-		return viewModelScope.async(Dispatchers.IO) {
+		return viewModelScope.async(dispatcher) {
 			_selectedTrackData.value?.album?.images?.get(MED_IMAGE_INDEX)?.url?.toBitmap()
 		}
 	}

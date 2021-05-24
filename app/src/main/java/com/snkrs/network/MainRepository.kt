@@ -19,6 +19,7 @@ class MainRepository(private val remote: MainRemote) {
 	}
 	private lateinit var token: String
 	private var tokenExpiry: Long = 0
+	private lateinit var artist: Artist
 	private var artistTopTracks: List<Track>? = null
 	private var audioFeatures: TrackAudioFeatures? = null
 
@@ -52,7 +53,7 @@ class MainRepository(private val remote: MainRemote) {
 	/**
 	 * refresh the authorization token from Spotify
 	 */
-	private suspend fun getAuthToken(): AuthTokenResponse {
+	suspend fun getAuthToken(): AuthTokenResponse {
 		val response = remote.getAuthToken().await()
 		token = "$AUTHORIZATION_BEARER ${response.token}"
 		tokenExpiry = System.currentTimeMillis() + (response.expiresIn * MILLIS)
@@ -62,5 +63,6 @@ class MainRepository(private val remote: MainRemote) {
 	/**
 	 * Check if authorization token is expired.
 	 */
-	private fun isTokenExpired() = (System.currentTimeMillis() > tokenExpiry)
+	fun isTokenExpired() = (System.currentTimeMillis() > tokenExpiry)
 }
+

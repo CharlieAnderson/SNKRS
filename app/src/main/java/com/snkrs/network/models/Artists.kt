@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class Artists (
 	@SerializedName("items")
-	val artist: ArrayList<Artist>
+	val artist: List<Artist>
 )

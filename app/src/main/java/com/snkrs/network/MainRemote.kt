@@ -1,6 +1,6 @@
 package com.snkrs.network
 
-import android.util.Base64
+import com.snkrs.encodeToBase64
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -8,6 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 /**
  * Remote class used directly for network API calls to the Spotify endpoints defined in [SpotifyApi]
  */
+
 class MainRemote {
 	companion object {
 		private const val SPOTIFY_AUTH_URL = "https://accounts.spotify.com/"
@@ -16,11 +17,11 @@ class MainRemote {
 		private const val SPOTIFY_CLIENT_SECRET = "85aff50cc117450ba2025a2c5afe755b"
 		private const val SPOTIFY_CLIENT_COMBO = "$SPOTIFY_CLIENT_ID:$SPOTIFY_CLIENT_SECRET"
 		private const val BASIC = "Basic"
-		var spotifyAuthorization =
-			"$BASIC ${Base64.encodeToString(SPOTIFY_CLIENT_COMBO.toByteArray(), Base64.NO_WRAP)}"
+		private val spotifyAuthorization: String
+			get() = "$BASIC ${SPOTIFY_CLIENT_COMBO.encodeToBase64()}"
 	}
 
-	private val spotifyAuthApi: SpotifyApi by lazy {
+	val spotifyAuthApi: SpotifyApi by lazy {
 		Retrofit.Builder()
 			.baseUrl(SPOTIFY_AUTH_URL)
 			.addConverterFactory(GsonConverterFactory.create())
@@ -29,7 +30,7 @@ class MainRemote {
 			.create(SpotifyApi::class.java)
 	}
 
-	private val spotifyBaseApi: SpotifyApi by lazy {
+	val spotifyBaseApi: SpotifyApi by lazy {
 		Retrofit.Builder()
 			.baseUrl(SPOTIFY_BASE_URL)
 			.addConverterFactory(GsonConverterFactory.create())

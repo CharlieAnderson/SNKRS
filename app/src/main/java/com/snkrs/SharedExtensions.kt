@@ -2,7 +2,6 @@ package com.snkrs
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
 import java.io.IOException
 import java.net.URL
 
@@ -17,3 +16,9 @@ fun URL.toBitmap(): Bitmap? {
 		null
 	}
 }
+
+
+fun String.encodeToBase64(): String {
+	return java.util.Base64.getEncoder().encodeToString(this.toByteArray());
+}
+
